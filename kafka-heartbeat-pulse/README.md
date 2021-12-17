@@ -72,10 +72,12 @@ The log4j directory contains log4j config files for INFO, WARN and DEBUG. Edit d
 
 Reinitialize Containers:
 To reinitialize all containers (in increasing levels of init-desperation) and start again
+```
 docker-compose down
 docker system prune --force
 docker rmi $(docker images)
 docker volume rm $(docker volume ls)
+```
 
 
 
