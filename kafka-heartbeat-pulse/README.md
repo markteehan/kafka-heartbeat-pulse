@@ -74,6 +74,7 @@ The heartbeat cycles are executed by scripts/pulse.sh in ten second cycles (conf
 ## InfluxDB
 
 Produce response times are stored in InfluxDB, pushed using a REST POST call from pulse.sh. Each "broker" measurement has a tag "environment" set to "prod". InfluxDB data resides in "data" (.git ignored). InfluxDB initialization is configured using environment variable in docker-compose.yml.
+InfluxDB Query logging is enabled: to enable it, change INFLUXDB_QUERY_LOG_ENABLED in docker-compose.yml
 
 
 
@@ -109,6 +110,39 @@ Make the following edits to run  heartbeats for another cluster
 2/ edit scripts/create.sh to add login credentials and replica.placement to match the target broker count
 3/ edit scripts/pulse.sh to align the target cluster broker count (default = 6)
 4/ edit the Grafana dashboard to add/remove panes to match the desired broker count.
+
+
+## States
+
+### Normal State
+Row 1 (Produce-ms to broker-n). Average produce time for the prior 5 minutes - blue/amber with produce ms of 0.1ms - 0.4 ms
+Row 2 (# Heartbeats) - Count of heartbeats for the prior 5 minutes - 20/21 heartbeats @ 10 sec intervals
+Row 3 Broker Produce Latency (ms) - time series visualization for the selected $timeFilter and interval
+
+### One Broker is unreachable
+```
+docker-compose stop kafka1
+```
+Grafana depicts the unreachable broker as red with miliseconds = 0 for up to five minutes, before changing to "No data"
+![Grafana](images/Grafana-kafka-1-down.png?raw=true)
+
+### Two Brokers are unreachable
+```
+docker-compose stop kafka2
+```
+Grafana depicts the second unreachable broker as red with miliseconds = 0 for up to five minutes, before changing to "No data"
+![Grafana](images/Grafana-2-brokers-down.png?raw=true)
+
+### Three Brokers are unreachable
+```
+docker-compose stop kafka3
+```
+Grafana depicts the third unreachable broker as red with miliseconds = 0 for up to five minutes, before changing to "No data"
+This is the expected result for a site-wide failure for three co-located brokers - for example - an inaccessible storage layer
+![Grafana](images/Grafana-3-brokers-down.png?raw=true)
+
+
+
 
 
 
