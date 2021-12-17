@@ -1,7 +1,11 @@
-This repo uses kafkacat to execute cycles of heartbeats by producing messages into a Kafka cluster to check that all brokers are responsive. It is useful in scenarios where a canary monitoring service is needed to check cluster health, independantly of the primary monitoring console.
+**What is it?**
+Use kafkacat with a Grafana dashboard to execute cycles of heartbeats by producing messages into a Kafka cluster to check that all brokers are responsive. 
+
+**Why is it?**
+Scenarios where a canary monitoring service is useful to check Kafka cluster health.
+If Kafka Monitoring topics are also hosted on Kafka, then monitoring can be affected if broker service degrades.
 It uses docker-compose to stand up containers, shell scripts to execute logic, kafkacat to produce messages, influxDB to store results and a Grafana dashboard to visualize heartbeat status.
 The shell scripts can be edited to redirect the heartbeat cycle to any Kafka cluster. 
-
 
 **Quickstart**
 start docker with at least 8GB RAM
@@ -19,9 +23,6 @@ Browse to localhost:3000 (Grafana)
 4/ Select Data Sources | InfluxDB | Add | hostname = "http://influxdb:8086" | database = "telegraf" | Test & Save
 5/ Select Dashboards | Kafka Heartbeat
 
-**why?**
-1/Confluent Control Centre depends on topics for state; when the topics are co-hosted with other application topics on a cluster that becomes unresponsive, then monitoring also becomes unresponsive.
-2/ Kafka Monitoring apps (Control Center included) may be rack0-aware; but not necessarily topology aware so visualizing placement of brokers in data centers can be helpful for a canary-level depiction of the system state. This is particulaly important for stretched clusters where heartbeat failure for brokers 4,5,6 simultaneously may indicate that DC2 is down.  
 
 **Broker level tests**
 the heartbeat topic is created with partition (count) = broker (count) with the leader for each partition on its respectively numbered broker. Kafkacat produces a message into a nominated partition with acks=1 to confirm that the broker is online, and can complete a produce request. The elapsed time to produce one message is recorded in InfluxDB in case a degradation in response time becomes visible.
@@ -61,6 +62,16 @@ Make the following edits to run  heartbeats for another cluster
 4/ edit the Grafana dashboard to add/remove panes to match the desired broker count.
 
 **Troubleshooting**
+Logging:
 The log4j directory contains log4j config files for INFO, WARN and DEBUG. Edit docker-compose.yml to change the desired level and restart the container
+
+Reinitialize Containers:
+To reinitialize all containers (in increasing levels of init-desperation) and start again
+docker-compose down
+docker system prune --force
+docker rmi $(docker images)
+docker volume rm $(docker volume ls)
+
+
 
 
