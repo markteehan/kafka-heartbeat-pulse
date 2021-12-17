@@ -28,22 +28,27 @@ Browse to http://localhost:3000 (Grafana)
 
 
 **Broker level tests**
+
 the heartbeat topic is created with partition (count) = broker (count) with the leader for each partition on its respectively numbered broker. Kafkacat produces a message into a nominated partition with acks=1 to confirm that the broker is online, and can complete a produce request. The elapsed time to produce one message is recorded in InfluxDB in case a degradation in response time becomes visible.
 
 **Docker**
+
 docker-compose stands up one zookeeper, six brokers, a Confluent Control center, InfluxDB, Grafana, Telegraf and a "Runme" container to start the shellscripts.
 
 **Kafkacat**
+
 A stripped down version of the wonderful Kafkacat is included; with the binary and the libs necessary to run the heartbeat (in scripts/lib). Kafkacat was chosen because of "-p" to produce into a specific parititon.
 This is the command executed in scripts/pulse.sh:
 kafkacat -b ${BROKER}:${PORT}  -t heartbeat -K: -p${PARTITION_ID} -T -P -X topic.request.required.acks=1
 The message it produces is simply partitionId:timestamp.  pulse.sh captures the elpased time to execute the kafkacat produce command, which is posted to InfluxDB to be visualized on Grafana.
 
 **Heartbeats**
-The heartbeat cycles are executed by scripts/pulse.sh in ten second cycles (configurable). 
+
+The heartbeat cycles are executed by scripts/pulse.sh in ten second cycles (configurable). Each heartbeat consists of a key and a value. The key is the partition number; for example "6". The value is a string timestamp, for example "Fri 17-Dec 02:12:05". There is no schemas registration as the  key & value format are bytes.
 
 **InfluxDB**
-Produce response times are stored in InfluxDB, pushed using a REST call to minimize dependancies. InfluxDB data resides in "data" (.git ignored)
+
+Produce response times are stored in InfluxDB, pushed using a REST POST call from pulse.sh. Each "broker" measurement has a tag "environment" set to "prod". InfluxDB data resides in "data" (.git ignored). InfluxDB initialization is configured using environment variable in docker-compose.yml.
 
 **Telegraf**
 The docker-compose contains a container for Telegraf (and there is a directory which is mounted with telegraf scrape configs for Kafka services) however this is not implemented as the focus is heartbeat cycles; not monitoring.
