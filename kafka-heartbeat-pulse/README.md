@@ -65,44 +65,44 @@ The message it produces is simply partitionId:timestamp.  pulse.sh captures the 
 
 
 
-**Heartbeats**
+## Heartbeats
 
 The heartbeat cycles are executed by scripts/pulse.sh in ten second cycles (configurable). Each heartbeat consists of a key and a value. The key is the partition number; for example "6". The value is a string timestamp, for example "Fri 17-Dec 02:12:05". There is no schemas registration as the  key & value format are bytes.
 
 
 
-**InfluxDB**
+## InfluxDB
 
 Produce response times are stored in InfluxDB, pushed using a REST POST call from pulse.sh. Each "broker" measurement has a tag "environment" set to "prod". InfluxDB data resides in "data" (.git ignored). InfluxDB initialization is configured using environment variable in docker-compose.yml.
 
 
 
-**Telegraf**
+## Telegraf
 
 The docker-compose contains a container for Telegraf (and there is a directory which is mounted with telegraf scrape configs for Kafka services) however this is not implemented as the focus is heartbeat cycles; not monitoring.
 
 
 
-**Grafana**
+## Grafana
 
 There are three layers of charts in Grafana: a single numeric metric for the produce ms/broker, a numeric metric for the number of heartbeats per broker (both for the prior 5 minute window) and produce ms/broker on a multi-series line chart, where each line depicts the broker response time for each heartbeat cycle. Metrics are polled from InfluxDB with thresholds to depict degraded (including dead) results in red. 
 Grafana data resides in "data" (.git ignored)
 
 
 
-**Replica Placement**
+## Replica Placement
 
 scripts/create.sh creates the heartbeat topic with three replicas (to avoid alarming monitoring products), using replica-placement to ensure that the leader for partition-1 is on broker-1; leader for partition-2 is on broker-2 etc. 
 
 
 
-**JMX Metric collection for JVMs**
+## JMX Metric collection for JVMs
 
 See add_jolokia/README to reconfigure JVMs to add jolokia to expand metric collection for JVMs
 
 
 
-**Usage for other clusters**
+## Using kafka-heartbeat-pulse to monitor another cluster
 
 Make the following edits to run  heartbeats for another cluster
 1/ [optional] edit docker-compose.yml and remove zookeeper, kafka and control-center containers
@@ -112,7 +112,7 @@ Make the following edits to run  heartbeats for another cluster
 
 
 
-**Troubleshooting**
+## Troubleshooting
 
 Logging:
 The log4j directory contains log4j config files for INFO, WARN and DEBUG. Edit docker-compose.yml to change the desired level and restart the container
