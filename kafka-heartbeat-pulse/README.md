@@ -12,7 +12,9 @@ start docker with at least 8GB RAM
 
 docker-compose up
 
-Browse to localhost:9021 (Control Center) to confirm 
+Browse to http://localhost:9021 (Control Center) to confirm 
+
+
 1/ Six brokers up
 2/ Heartbeat topic with six partition
 3/ Confirm that partition leader alignment = broker id (partition 1 leader on broker 1 etc)
