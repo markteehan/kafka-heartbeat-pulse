@@ -9,18 +9,17 @@ The shell scripts can be edited to redirect the heartbeat cycle to any Kafka clu
 
 **Quickstart**
 start docker with at least 8GB RAM
-
+```
 docker-compose up
+```
 
 Browse to http://localhost:9021 (Control Center) to confirm 
-
-
 1/ Six brokers up
 2/ Heartbeat topic with six partition
 3/ Confirm that partition leader alignment = broker id (partition 1 leader on broker 1 etc)
 4/ "End Offset" is advancing for all partitions every 10 seconds
 
-Browse to localhost:3000 (Grafana)
+Browse to http://localhost:3000 (Grafana)
 1/ Login as Admin/Admin
 2/ At password chanhge prompt click "skip"
 3/ Select Dashboards | Import | Import JSON File | Browse | Select "grafana.json"
