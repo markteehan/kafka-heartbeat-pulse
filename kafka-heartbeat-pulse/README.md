@@ -44,13 +44,14 @@ The message it produces is simply partitionId:timestamp.  pulse.sh captures the 
 The heartbeat cycles are executed by scripts/pulse.sh in ten second cycles (configurable). 
 
 **InfluxDB**
-Produce response times are stored in InfluxDB, pushed using a REST call to minimize dependancies. 
+Produce response times are stored in InfluxDB, pushed using a REST call to minimize dependancies. InfluxDB data resides in "data" (.git ignored)
 
 **Telegraf**
 The docker-compose contains a container for Telegraf (and there is a directory which is mounted with telegraf scrape configs for Kafka services) however this is not implemented as the focus is heartbeat cycles; not monitoring.
 
 **Grafana**
 There are three layers of charts in Grafana: a single numeric metric for the produce ms/broker, a numeric metric for the number of heartbeats per broker (both for the prior 5 minute window) and produce ms/broker on a multi-series line chart, where each line depicts the broker response time for each heartbeat cycle. Metrics are polled from InfluxDB with thresholds to depict degraded (including dead) results in red. 
+Grafana data resides in "data" (.git ignored)
 
 **Replica Placement**
 scripts/create.sh creates the heartbeat topic with three replicas (to avoid alarming monitoring products), using replica-placement to ensure that the leader for partition-1 is on broker-1; leader for partition-2 is on broker-2 etc. 
