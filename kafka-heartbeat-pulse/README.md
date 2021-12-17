@@ -3,11 +3,13 @@ kafkacat with a Grafana dashboard to execute cycles of heartbeats by producing m
 ![Grafana](images/Grafana-heartbeat-pulse.png?raw=true)
 
 
+
 **Why is it?**
 Scenarios where a canary monitoring service is useful to check Kafka cluster health.
 If Kafka Monitoring topics are also hosted on Kafka, then monitoring can be affected if broker service degrades.
 It uses docker-compose to stand up containers, shell scripts to execute logic, kafkacat to produce messages, influxDB to store results and a Grafana dashboard to visualize heartbeat status.
 The shell scripts can be edited to redirect the heartbeat cycle to any Kafka cluster. 
+
 
 
 **Quickstart**
@@ -39,14 +41,17 @@ Browse to http://localhost:3000 (Grafana)
 5/ Select Dashboards | Browse | Kafka Heartbeat
 
 
+
 **Broker level tests**
 
 the heartbeat topic is created with partition (count) = broker (count) with the leader for each partition on its respectively numbered broker. Kafkacat produces a message into a nominated partition with acks=1 to confirm that the broker is online, and can complete a produce request. The elapsed time to produce one message is recorded in InfluxDB in case a degradation in response time becomes visible.
 
 
+
 **Docker**
 
 docker-compose stands up one zookeeper, six brokers, a Confluent Control center, InfluxDB, Grafana, Telegraf and a "Runme" container to start the shellscripts.
+
 
 
 **Kafkacat**
@@ -57,9 +62,11 @@ kafkacat -b ${BROKER}:${PORT}  -t heartbeat -K: -p${PARTITION_ID} -T -P -X topic
 The message it produces is simply partitionId:timestamp.  pulse.sh captures the elpased time to execute the kafkacat produce command, which is posted to InfluxDB to be visualized on Grafana.
 
 
+
 **Heartbeats**
 
 The heartbeat cycles are executed by scripts/pulse.sh in ten second cycles (configurable). Each heartbeat consists of a key and a value. The key is the partition number; for example "6". The value is a string timestamp, for example "Fri 17-Dec 02:12:05". There is no schemas registration as the  key & value format are bytes.
+
 
 
 **InfluxDB**
@@ -67,9 +74,11 @@ The heartbeat cycles are executed by scripts/pulse.sh in ten second cycles (conf
 Produce response times are stored in InfluxDB, pushed using a REST POST call from pulse.sh. Each "broker" measurement has a tag "environment" set to "prod". InfluxDB data resides in "data" (.git ignored). InfluxDB initialization is configured using environment variable in docker-compose.yml.
 
 
+
 **Telegraf**
 
 The docker-compose contains a container for Telegraf (and there is a directory which is mounted with telegraf scrape configs for Kafka services) however this is not implemented as the focus is heartbeat cycles; not monitoring.
+
 
 
 **Grafana**
@@ -78,14 +87,17 @@ There are three layers of charts in Grafana: a single numeric metric for the pro
 Grafana data resides in "data" (.git ignored)
 
 
+
 **Replica Placement**
 
 scripts/create.sh creates the heartbeat topic with three replicas (to avoid alarming monitoring products), using replica-placement to ensure that the leader for partition-1 is on broker-1; leader for partition-2 is on broker-2 etc. 
 
 
+
 **JMX Metric collection for JVMs**
 
 See add_jolokia/README to reconfigure JVMs to add jolokia to expand metric collection for JVMs
+
 
 
 **Usage for other clusters**
@@ -95,6 +107,7 @@ Make the following edits to run  heartbeats for another cluster
 2/ edit scripts/create.sh to add login credentials and replica.placement to match the target broker count
 3/ edit scripts/pulse.sh to align the target cluster broker count (default = 6)
 4/ edit the Grafana dashboard to add/remove panes to match the desired broker count.
+
 
 
 **Troubleshooting**
