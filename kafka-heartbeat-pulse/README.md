@@ -1,5 +1,6 @@
 **What is it?**
 kafkacat with a Grafana dashboard to execute cycles of heartbeats by producing messages into a Kafka cluster to check that all brokers are responsive. 
+![Grafana](images/Grafana-heartbeat-pulse.png?raw=true)
 
 
 **Why is it?**
@@ -23,19 +24,19 @@ Browse to http://localhost:9021 (Control Center) to confirm
 2/ Heartbeat topic with six partition
 
 3/ Confirm that partition leader alignment = broker id (partition 1 leader on broker 1 etc)
-![alt text](images/Control-center-partition-leaders.png?raw=true)
+![Partition Leader Broker == Broker ID](images/Control-center-partition-leaders.png?raw=true)
 
 4/ "End Offset" is advancing for all partitions every 10 seconds
 
 
-
-
 Browse to http://localhost:3000 (Grafana)
 1/ Login as Admin/Admin
+![Grafana Login](images/Grafana-login.png?raw=true)
+
 2/ At password chanhge prompt click "skip"
-3/ Select Dashboards | Import | Import JSON File | Browse | Select "grafana.json"
-4/ Select Data Sources | InfluxDB | Add | hostname = "http://influxdb:8086" | database = "telegraf" | Test & Save
-5/ Select Dashboards | Kafka Heartbeat
+3/ Select "+" | Import | Upload JSON File | Select "grafana_heartbeat.json" | Import
+4/ Select Settings Cog |  Data Sources | Add data source | InfluxDB | URL = "http://influxdb:8086" | Database = "telegraf" | Save & test. "Data source is working"
+5/ Select Dashboards | Browse | Kafka Heartbeat
 
 
 **Broker level tests**
