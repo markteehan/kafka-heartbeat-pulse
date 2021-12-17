@@ -1,10 +1,12 @@
-##**What is it?**
+##What is it?
+
 kafkacat with a Grafana dashboard to execute cycles of heartbeats by producing messages into a Kafka cluster to check that all brokers are responsive. 
 ![Grafana](images/Grafana-heartbeat-pulse.png?raw=true)
 
 
 
-##**Why is it?**
+##Why is it?
+
 Scenarios where a canary monitoring service is useful to check Kafka cluster health.
 If Kafka Monitoring topics are also hosted on Kafka, then monitoring can be affected if broker service degrades.
 It uses docker-compose to stand up containers, shell scripts to execute logic, kafkacat to produce messages, influxDB to store results and a Grafana dashboard to visualize heartbeat status.
