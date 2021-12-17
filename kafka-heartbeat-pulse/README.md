@@ -23,7 +23,7 @@ Browse to http://localhost:9021 (Control Center) to confirm
 2/ Heartbeat topic with six partition
 
 3/ Confirm that partition leader alignment = broker id (partition 1 leader on broker 1 etc)
-![alt text](images/Control-center-overview.png?raw=true)
+![alt text](images/Control-center-partition-leaders.png?raw=true)
 
 4/ "End Offset" is advancing for all partitions every 10 seconds
 
