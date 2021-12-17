@@ -9,7 +9,9 @@ The shell scripts can be edited to redirect the heartbeat cycle to any Kafka clu
 
 **Quickstart**
 start docker with at least 8GB RAM
+
 docker-compose up
+
 Browse to localhost:9021 (Control Center) to confirm 
 1/ Six brokers up
 2/ Heartbeat topic with six partition
