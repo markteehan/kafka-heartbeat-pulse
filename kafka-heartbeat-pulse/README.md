@@ -14,7 +14,7 @@ The shell scripts can be edited to redirect the heartbeat cycle to any Kafka clu
 
 
 
-##**Quickstart**
+## Quickstart
 start docker with at least 8GB RAM
 ```
 docker-compose up
@@ -44,9 +44,9 @@ Browse to http://localhost:3000 (Grafana)
 
 
 
-**Broker level tests**
+## How it works
 
-the heartbeat topic is created with partition (count) = broker (count) with the leader for each partition on its respectively numbered broker. Kafkacat produces a message into a nominated partition with acks=1 to confirm that the broker is online, and can complete a produce request. The elapsed time to produce one message is recorded in InfluxDB in case a degradation in response time becomes visible.
+A "heartbeat" topic is created with partition (count) = broker (count). Each partition leader is located on its equivalent broker - the leader for partiton 1 is on broker 1 etc. This is done using replica-placement when creating the topic. The heartbeat topic has three replicas. Kafkacat cycles through the partitions, producing one message per cycle into each  partition with acks=1. Success means that the broker is online and that it can complete a produce request (so the filesystem is writable). The elapsed time to produce one message is recorded in InfluxDB. Any signifncant degradation in response time should be visible on Grafana.
 
 
 
