@@ -1,0 +1,20 @@
+This repo uses InfluxDB & Grafana for heartbeat cycles. 
+Usage can be expanded from heartbeat cycles only to JMX metric collection from all services.
+To do this, make the following edits to the docker-compose.yml
+
+
+1/ Move the "jolokia" subdirectory in this directory to the same directory as docker-compose.yml
+mv add_jolokia/jolokia .
+
+2/ Mount the jolokia volume to all JVM containers that you want to monitor (usually kafka, kSQL and Connect)
+   For each container, edit this:
+    volumes:
+      - ./log4j-injected:/etc/kafka/log4j-injected
+
+   to this:
+    volumes:
+      - ./log4j-injected:/etc/kafka/log4j-injected
+      - ./jolokia:/opt/jolokia
+
+3/ Include the Jolokia jarfile into each JVM. Edit docker-compose to add this line to the same containers
+   KAFKA_OPTS: "-javaagent:/opt/jolokia/jolokia.jar=host=0.0.0.0"

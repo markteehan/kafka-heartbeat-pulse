@@ -1,0 +1,345 @@
+version: '3'
+networks:
+  n1:
+
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    container_name: zookeeper
+    networks:
+      - n1
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+      ZOOKEEPER_JMX_PORT: 3001
+      ZOOKEEPER_JMX_HOSTNAME: "zookeeper"
+      #ZOOKEEPER_4LW_COMMANDS_WHITELIST: "srvr,mntr"
+      #ZOOKEEPER_OPTS: "-Dzookeeper.4lw.commands.whitelist=*"
+      #KAFKA_OPTS: "-Dzookeeper.4lw.commands.whitelist=*"
+      EXTRA_ARGS: "-Dzookeeper.4lw.commands.whitelist=*"
+
+  kafka1:
+    image: confluentinc/cp-enterprise-kafka:latest
+    container_name: kafka1
+    hostname: kafka1
+    depends_on:
+      - zookeeper
+    ports:
+      - 9091:9091
+      - 3001:3001
+    networks:
+      - n1
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_BROKER_RACK: 'west'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_DOCKER_INTERNAL:PLAINTEXT,LISTENER_DOCKER_EXTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_DOCKER_INTERNAL
+      KAFKA_ADVERTISED_LISTENERS: LISTENER_DOCKER_INTERNAL://kafka1:19091,LISTENER_DOCKER_EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9091
+      KAFKA_REPLICA_SELECTOR_CLASS: org.apache.kafka.common.replica.RackAwareReplicaSelector
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_JMX_PORT: 3001
+      KAFKA_JMX_HOSTNAME: "kafka1"
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 3
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 2
+      KAFKA_METRIC_REPORTERS: io.confluent.metrics.reporter.ConfluentMetricsReporter
+      CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: kafka1:19091
+      CONFLUENT_METRICS_REPORTER_ZOOKEEPER_CONNECT: zookeeper:2181
+      CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 3
+      KAFKA_LOG4J_OPTS: "-Dlog4j.configuration=file:/etc/kafka/log4j-injected/log4j.INFO.properties"
+      KAFKA_REPLICA_SELECTOR_CLASS: org.apache.kafka.common.replica.RackAwareReplicaSelector
+      KAFKA_CONFLUENT_BALANCER_ENABLE: 'true'
+      KAFKA_CONFLUENT_BALANCER_HEAL_BROKER_FAILURE_THRESHOLD_MS: 20000
+      KAFKA_CONFLUENT_BALANCER_HEAL_UNEVEN_LOAD_TRIGGER: ANY_UNEVEN_LOAD
+      KAFKA_OPTS: "-javaagent:/opt/jolokia/jolokia.jar=host=0.0.0.0"
+    volumes:
+      - ./log4j-injected:/etc/kafka/log4j-injected
+      - ./jolokia:/opt/jolokia
+
+
+  kafka2:
+    image: confluentinc/cp-enterprise-kafka:latest
+    container_name: kafka2
+    hostname: kafka2
+    depends_on:
+      - zookeeper
+    ports:
+      - 9092:9092
+    networks:
+      - n1
+    environment:
+      KAFKA_BROKER_ID: 2
+      KAFKA_BROKER_RACK: 'west'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_DOCKER_INTERNAL:PLAINTEXT,LISTENER_DOCKER_EXTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_DOCKER_INTERNAL
+      KAFKA_ADVERTISED_LISTENERS: LISTENER_DOCKER_INTERNAL://kafka2:19092,LISTENER_DOCKER_EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9092
+      KAFKA_REPLICA_SELECTOR_CLASS: org.apache.kafka.common.replica.RackAwareReplicaSelector
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_JMX_PORT: 3001
+      KAFKA_JMX_HOSTNAME: "kafka2"
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 3
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 2
+      KAFKA_METRIC_REPORTERS: io.confluent.metrics.reporter.ConfluentMetricsReporter
+      CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: kafka1:19091
+      CONFLUENT_METRICS_REPORTER_ZOOKEEPER_CONNECT: zookeeper:2181
+      CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 3
+      KAFKA_LOG4J_OPTS: "-Dlog4j.configuration=file:/etc/kafka/log4j-injected/log4j.INFO.properties"
+      KAFKA_REPLICA_SELECTOR_CLASS: org.apache.kafka.common.replica.RackAwareReplicaSelector
+      KAFKA_CONFLUENT_BALANCER_ENABLE: 'true'
+      KAFKA_CONFLUENT_BALANCER_HEAL_BROKER_FAILURE_THRESHOLD_MS: 20000
+      KAFKA_CONFLUENT_BALANCER_HEAL_UNEVEN_LOAD_TRIGGER: ANY_UNEVEN_LOAD
+      KAFKA_OPTS: "-javaagent:/opt/jolokia/jolokia.jar=host=0.0.0.0"
+    volumes:
+      - ./log4j-injected:/etc/kafka/log4j-injected
+      - ./jolokia:/opt/jolokia
+
+  kafka3:
+    image: confluentinc/cp-enterprise-kafka:latest
+    container_name: kafka3
+    hostname: kafka3
+    depends_on:
+      - zookeeper
+    ports:
+      - 9093:9093
+    networks:
+      - n1
+    environment:
+      KAFKA_BROKER_ID: 3
+      KAFKA_BROKER_RACK: 'west'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_DOCKER_INTERNAL:PLAINTEXT,LISTENER_DOCKER_EXTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_DOCKER_INTERNAL
+      KAFKA_ADVERTISED_LISTENERS: LISTENER_DOCKER_INTERNAL://kafka3:19093,LISTENER_DOCKER_EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9093
+      KAFKA_REPLICA_SELECTOR_CLASS: org.apache.kafka.common.replica.RackAwareReplicaSelector
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_JMX_PORT: 3001
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 3
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 2
+      KAFKA_METRIC_REPORTERS: io.confluent.metrics.reporter.ConfluentMetricsReporter
+      CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: kafka1:19091
+      CONFLUENT_METRICS_REPORTER_ZOOKEEPER_CONNECT: zookeeper:2181
+      CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 3
+      KAFKA_LOG4J_OPTS: "-Dlog4j.configuration=file:/etc/kafka/log4j-injected/log4j.INFO.properties"
+      KAFKA_REPLICA_SELECTOR_CLASS: org.apache.kafka.common.replica.RackAwareReplicaSelector
+      KAFKA_CONFLUENT_BALANCER_ENABLE: 'true'
+      KAFKA_CONFLUENT_BALANCER_HEAL_BROKER_FAILURE_THRESHOLD_MS: 20000
+      KAFKA_CONFLUENT_BALANCER_HEAL_UNEVEN_LOAD_TRIGGER: ANY_UNEVEN_LOAD
+      KAFKA_OPTS: "-javaagent:/opt/jolokia/jolokia.jar=host=0.0.0.0"
+    volumes:
+      - ./log4j-injected:/etc/kafka/log4j-injected
+      - ./jolokia:/opt/jolokia
+
+
+  kafka4:
+    image: confluentinc/cp-enterprise-kafka:latest
+    container_name: kafka4
+    hostname: kafka4
+    depends_on:
+      - zookeeper
+    ports:
+      - 9094:9094
+    networks:
+      - n1
+    environment:
+      KAFKA_BROKER_ID: 4
+      KAFKA_BROKER_RACK: 'west'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_DOCKER_INTERNAL:PLAINTEXT,LISTENER_DOCKER_EXTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_DOCKER_INTERNAL
+      KAFKA_ADVERTISED_LISTENERS: LISTENER_DOCKER_INTERNAL://kafka4:19094,LISTENER_DOCKER_EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9094
+      KAFKA_REPLICA_SELECTOR_CLASS: org.apache.kafka.common.replica.RackAwareReplicaSelector
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_JMX_PORT: 3001
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 3
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 2
+      KAFKA_METRIC_REPORTERS: io.confluent.metrics.reporter.ConfluentMetricsReporter
+      CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: kafka1:19091
+      CONFLUENT_METRICS_REPORTER_ZOOKEEPER_CONNECT: zookeeper:2181
+      CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 3
+      KAFKA_LOG4J_OPTS: "-Dlog4j.configuration=file:/etc/kafka/log4j-injected/log4j.INFO.properties"
+      KAFKA_REPLICA_SELECTOR_CLASS: org.apache.kafka.common.replica.RackAwareReplicaSelector
+      KAFKA_CONFLUENT_BALANCER_ENABLE: 'true'
+      KAFKA_CONFLUENT_BALANCER_HEAL_BROKER_FAILURE_THRESHOLD_MS: 20000
+      KAFKA_CONFLUENT_BALANCER_HEAL_UNEVEN_LOAD_TRIGGER: ANY_UNEVEN_LOAD
+      KAFKA_OPTS: "-javaagent:/opt/jolokia/jolokia.jar=host=0.0.0.0"
+    volumes:
+      - ./log4j-injected:/etc/kafka/log4j-injected
+      - ./jolokia:/opt/jolokia
+
+  kafka5:
+    image: confluentinc/cp-enterprise-kafka:latest
+    container_name: kafka5
+    hostname: kafka5
+    depends_on:
+      - zookeeper
+    ports:
+      - 9095:9095
+    networks:
+      - n1
+    environment:
+      KAFKA_BROKER_ID: 5
+      KAFKA_BROKER_RACK: 'west'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_DOCKER_INTERNAL:PLAINTEXT,LISTENER_DOCKER_EXTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_DOCKER_INTERNAL
+      KAFKA_ADVERTISED_LISTENERS: LISTENER_DOCKER_INTERNAL://kafka5:19095,LISTENER_DOCKER_EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9095
+      KAFKA_REPLICA_SELECTOR_CLASS: org.apache.kafka.common.replica.RackAwareReplicaSelector
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_JMX_PORT: 3001
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 3
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 2
+      KAFKA_METRIC_REPORTERS: io.confluent.metrics.reporter.ConfluentMetricsReporter
+      CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: kafka1:19091
+      CONFLUENT_METRICS_REPORTER_ZOOKEEPER_CONNECT: zookeeper:2181
+      CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 3
+      KAFKA_LOG4J_OPTS: "-Dlog4j.configuration=file:/etc/kafka/log4j-injected/log4j.INFO.properties"
+      KAFKA_REPLICA_SELECTOR_CLASS: org.apache.kafka.common.replica.RackAwareReplicaSelector
+      KAFKA_CONFLUENT_BALANCER_ENABLE: 'true'
+      KAFKA_CONFLUENT_BALANCER_HEAL_BROKER_FAILURE_THRESHOLD_MS: 20000
+      KAFKA_CONFLUENT_BALANCER_HEAL_UNEVEN_LOAD_TRIGGER: ANY_UNEVEN_LOAD
+      KAFKA_OPTS: "-javaagent:/opt/jolokia/jolokia.jar=host=0.0.0.0"
+    volumes:
+      - ./log4j-injected:/etc/kafka/log4j-injected
+      - ./jolokia:/opt/jolokia
+
+  kafka6:
+    image: confluentinc/cp-enterprise-kafka:latest
+    container_name: kafka6
+    hostname: kafka6
+    depends_on:
+      - zookeeper
+    ports:
+      - 9096:9096
+    networks:
+      - n1
+    environment:
+      KAFKA_BROKER_ID: 6
+      KAFKA_BROKER_RACK: 'west'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_DOCKER_INTERNAL:PLAINTEXT,LISTENER_DOCKER_EXTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_DOCKER_INTERNAL
+      KAFKA_ADVERTISED_LISTENERS: LISTENER_DOCKER_INTERNAL://kafka6:19096,LISTENER_DOCKER_EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9096
+      KAFKA_REPLICA_SELECTOR_CLASS: org.apache.kafka.common.replica.RackAwareReplicaSelector
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_JMX_PORT: 3001
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 3
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 2
+      KAFKA_METRIC_REPORTERS: io.confluent.metrics.reporter.ConfluentMetricsReporter
+      CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: kafka1:19091
+      CONFLUENT_METRICS_REPORTER_ZOOKEEPER_CONNECT: zookeeper:2181
+      CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 3
+      KAFKA_LOG4J_OPTS: "-Dlog4j.configuration=file:/etc/kafka/log4j-injected/log4j.INFO.properties"
+      KAFKA_REPLICA_SELECTOR_CLASS: org.apache.kafka.common.replica.RackAwareReplicaSelector
+      KAFKA_CONFLUENT_BALANCER_ENABLE: 'true'
+      KAFKA_CONFLUENT_BALANCER_HEAL_BROKER_FAILURE_THRESHOLD_MS: 20000
+      KAFKA_CONFLUENT_BALANCER_HEAL_UNEVEN_LOAD_TRIGGER: ANY_UNEVEN_LOAD
+      KAFKA_OPTS: "-javaagent:/opt/jolokia/jolokia.jar=host=0.0.0.0"
+    volumes:
+      - ./log4j-injected:/etc/kafka/log4j-injected
+      - ./jolokia:/opt/jolokia
+
+  control-center:
+    depends_on:
+    - kafka6
+    image: confluentinc/cp-enterprise-control-center:latest
+    container_name: control-center
+    ports:
+      - "9021:9021"
+    networks:
+      - n1
+    environment:
+      CONTROL_CENTER_BOOTSTRAP_SERVERS: "kafka1:19091,kafka2:19092"
+      CONTROL_CENTER_ZOOKEEPER_CONNECT: "zookeeper:2181"
+      CONTROL_CENTER_KSQL_URL: "http://ksqldb1:8088"
+      CONTROL_CENTER_KSQL_ADVERTISED_URL: "http://localhost:8088"
+      CONTROL_CENTER_STREAMS_CPREST_URL: http://kafka1:8090
+      CONFLUENT_METRICS_TOPIC_REPLICATION: 3
+      CONTROL_CENTER_REPLICATION_FACTOR: 3
+      CONTROL_CENTER_COMMAND_TOPIC_REPLICATION: 3
+      CONTROL_CENTER_MONITORING_INTERCEPTOR_TOPIC_REPLICATION: 3
+      CONTROL_CENTER_INTERNAL_TOPICS_PARTITIONS: 3
+      CONTROL_CENTER_DEPRECATED_VIEWS_ENABLE: "true"
+      CONTROL_CENTER_LOG4J_OPTS: "-Dlog4j.configuration=file:/etc/kafka/log4j-injected/log4j.ERROR.properties"
+    volumes:
+       - ./log4j-injected:/etc/kafka/log4j-injected
+
+  telegraf:
+    image: telegraf:1.12
+    container_name: telegraf
+    hostname: telegraf
+    networks:
+      - n1
+    environment:
+      - INFLUX_TOKEN=Abcd1234
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock
+      - ./telegraf/telegraf.conf:/tmp/telegraf.conf:ro
+      - ./telegraf/telegraf.d/:/tmp/telegraf-inputs/:ro
+    command: telegraf -config /tmp/telegraf.conf --config-directory /tmp/telegraf-inputs
+
+  influxdb:
+    image: influxdb:1.1.0-alpine
+    container_name: influxdb
+    networks:
+      - n1
+    ports:
+       - 8086:8086
+    volumes:
+       - ./data/influx/:/var/lib/influxdb
+    environment:
+       - INFLUXDB_HTTP_LOG_ENABLED=false
+       - INFLUXDB_LOGGING_LEVEL=INFO
+       - INFLUXDB_HOSTNAME=influxdb
+       - INFLUXDB_INIT_MODE=setup
+       - INFLUXDB_INIT_USERNAME=root
+       - INFLUXDB_INIT_PASSWORD=root
+       - INFLUXDB_INIT_ORG=CoreBankingDemo
+       - INFLUXDB_INIT_ADMIN_TOKEN=Abcd1234
+       - INFLUXDB_TELEGRAF_TOKEN=Abcd1234
+       # The maximum number of tag values per tag that are allowed before writes are dropped. This limit can prevent
+       # high cardinality tag values from being written to a measurement. This limit can be disabled by setting it to 0.
+       - INFLUXDB_DATA_MAX_VALUES_PER_TAG=0
+    ports:
+       - 8086:8086
+    volumes:
+       - ./data/influx/:/var/lib/influxdb
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: "grafana"
+    networks:
+      - n1
+    links:
+      - influxdb
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_DEFAULT_THEME=light
+
+  Runme:
+    image: confluentinc/cp-server:latest
+    container_name: Runme
+    tty: true
+    depends_on:
+      - kafka6
+    networks:
+      - n1
+    volumes:
+       - ./log4j-injected:/etc/kafka/log4j-injected
+       - ./scripts:/tmp/kafkacat
+    command:
+      - sh
+      - -c
+      - |
+        echo "========= Starting Heartbeater ==========="
+        /tmp/kafkacat/create.sh
+        sleep 5
+        /tmp/kafkacat/pulse.sh 1>/dev/null 2>&1    # remove the redirects for stdout logging
+
