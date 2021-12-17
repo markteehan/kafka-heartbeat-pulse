@@ -17,9 +17,18 @@ docker-compose up
 
 Browse to http://localhost:9021 (Control Center) to confirm 
 1/ Six brokers up
+![alt text](https://github.com/markteehan/kafka-heartbeat-pulse/blob/main/images/Control-center-overview.png?raw=true)
+
+
 2/ Heartbeat topic with six partition
+
 3/ Confirm that partition leader alignment = broker id (partition 1 leader on broker 1 etc)
+![alt text](https://github.com/markteehan/kafka-heartbeat-pulse/blob/main/images/Control-center-overview.png?raw=true)
+
 4/ "End Offset" is advancing for all partitions every 10 seconds
+
+
+
 
 Browse to http://localhost:3000 (Grafana)
 1/ Login as Admin/Admin
