@@ -21,7 +21,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 1,
+  "id": 2,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -78,7 +78,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.0",
+      "pluginVersion": "8.3.3",
       "targets": [
         {
           "datasource": {
@@ -185,7 +185,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.0",
+      "pluginVersion": "8.3.3",
       "targets": [
         {
           "datasource": {
@@ -292,7 +292,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.0",
+      "pluginVersion": "8.3.3",
       "targets": [
         {
           "datasource": {
@@ -399,7 +399,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.0",
+      "pluginVersion": "8.3.3",
       "targets": [
         {
           "datasource": {
@@ -506,7 +506,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.0",
+      "pluginVersion": "8.3.3",
       "targets": [
         {
           "datasource": {
@@ -613,7 +613,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.0",
+      "pluginVersion": "8.3.3",
       "targets": [
         {
           "datasource": {
@@ -720,7 +720,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.0",
+      "pluginVersion": "8.3.3",
       "targets": [
         {
           "datasource": {
@@ -827,7 +827,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.0",
+      "pluginVersion": "8.3.3",
       "targets": [
         {
           "datasource": {
@@ -934,7 +934,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.0",
+      "pluginVersion": "8.3.3",
       "targets": [
         {
           "datasource": {
@@ -1041,7 +1041,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.0",
+      "pluginVersion": "8.3.3",
       "targets": [
         {
           "datasource": {
@@ -1148,7 +1148,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.0",
+      "pluginVersion": "8.3.3",
       "targets": [
         {
           "datasource": {
@@ -1255,7 +1255,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.0",
+      "pluginVersion": "8.3.3",
       "targets": [
         {
           "datasource": {
@@ -1707,7 +1707,7 @@
     }
   ],
   "refresh": "10s",
-  "schemaVersion": 33,
+  "schemaVersion": 34,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -1719,8 +1719,8 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "Kafka HeartBeat",
-  "uid": "1opr812nz",
-  "version": 3,
+  "title": "Grafana2",
+  "uid": "HRJS6nonz",
+  "version": 2,
   "weekStart": ""
 }

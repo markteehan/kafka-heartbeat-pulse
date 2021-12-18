@@ -1,4 +1,5 @@
 #!/bin/sh
+#
 echo "========= Creating topic heartbeat                           ===================="
 echo "kafka-topics --bootstrap-server kafka1:19091,kafka2:19092 --delete --topic heartbeat"
       kafka-topics --bootstrap-server kafka1:19091,kafka2:19092 --delete --topic heartbeat 2>/dev/null
