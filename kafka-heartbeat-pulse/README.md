@@ -25,7 +25,7 @@ Browse to http://localhost:9021 (Control Center) to confirm
 ![Six Brokers up](images/Control-center-overview.png?raw=true)
 
 
-2/ Heartbeat topic with six partition
+2/ Heartbeat topic with six partitions
 
 3/ Confirm that partition leader alignment = broker id (partition 1 leader on broker 1 etc)
 ![Partition Leader Broker == Broker ID](images/Control-center-partition-leaders.png?raw=true)
@@ -34,13 +34,11 @@ Browse to http://localhost:9021 (Control Center) to confirm
 
 
 Browse to http://localhost:3000 (Grafana)
+The datasource "InfluxDB" is auto-provisioned, and the dashboard "Kafka Heartbeat" is auto-imported.
 1/ Login as Admin/Admin
 ![Grafana Login](images/Grafana-login.png?raw=true)
 
-2/ At password chanhge prompt click "skip"
-3/ Select "+" | Import | Upload JSON File | Select "grafana_heartbeat.json" | Import
-4/ Select Settings Cog |  Data Sources | Add data source | InfluxDB | URL = "http://influxdb:8086" | Database = "telegraf" | Save & test. "Data source is working"
-5/ Select Dashboards | Browse | Kafka Heartbeat
+2/ Select Dashboards | Browse | Kafka Heartbeat
 
 
 
