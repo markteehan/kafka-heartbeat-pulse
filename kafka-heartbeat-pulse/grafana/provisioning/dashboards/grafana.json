@@ -37,20 +37,20 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "red",
                 "value": null
               },
               {
-                "color": "red",
-                "value": 0
-              },
-              {
-                "color": "#6ED0E0",
-                "value": 0.0001
+                "color": "green",
+                "value": 1
               },
               {
                 "color": "#EAB839",
-                "value": 0.2
+                "value": 180
+              },
+              {
+                "color": "orange",
+                "value": 200
               }
             ]
           }
@@ -144,20 +144,20 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "red",
                 "value": null
               },
               {
-                "color": "red",
-                "value": 0
-              },
-              {
-                "color": "#6ED0E0",
-                "value": 0.0001
+                "color": "green",
+                "value": 1
               },
               {
                 "color": "#EAB839",
-                "value": 0.2
+                "value": 180
+              },
+              {
+                "color": "orange",
+                "value": 200
               }
             ]
           }
@@ -251,20 +251,20 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "red",
                 "value": null
               },
               {
-                "color": "red",
-                "value": 0
-              },
-              {
-                "color": "#6ED0E0",
-                "value": 0.0001
+                "color": "green",
+                "value": 1
               },
               {
                 "color": "#EAB839",
-                "value": 0.2
+                "value": 180
+              },
+              {
+                "color": "orange",
+                "value": 200
               }
             ]
           }
@@ -358,20 +358,20 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "red",
                 "value": null
               },
               {
-                "color": "red",
-                "value": 0
-              },
-              {
-                "color": "#6ED0E0",
-                "value": 0.0001
+                "color": "green",
+                "value": 1
               },
               {
                 "color": "#EAB839",
-                "value": 0.2
+                "value": 180
+              },
+              {
+                "color": "orange",
+                "value": 200
               }
             ]
           }
@@ -465,20 +465,20 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "red",
                 "value": null
               },
               {
-                "color": "red",
-                "value": 0
-              },
-              {
-                "color": "#6ED0E0",
-                "value": 0.0001
+                "color": "green",
+                "value": 1
               },
               {
                 "color": "#EAB839",
-                "value": 0.2
+                "value": 180
+              },
+              {
+                "color": "orange",
+                "value": 200
               }
             ]
           }
@@ -572,20 +572,20 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "red",
                 "value": null
               },
               {
-                "color": "red",
-                "value": 0
-              },
-              {
-                "color": "#6ED0E0",
-                "value": 0.0001
+                "color": "green",
+                "value": 1
               },
               {
                 "color": "#EAB839",
-                "value": 0.2
+                "value": 180
+              },
+              {
+                "color": "orange",
+                "value": 200
               }
             ]
           }
@@ -679,20 +679,20 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "red",
                 "value": null
               },
               {
-                "color": "red",
-                "value": 0
-              },
-              {
-                "color": "#6ED0E0",
-                "value": 0.0001
+                "color": "green",
+                "value": 1
               },
               {
                 "color": "#EAB839",
-                "value": 0.2
+                "value": 180
+              },
+              {
+                "color": "orange",
+                "value": 200
               }
             ]
           }
@@ -786,20 +786,20 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "red",
                 "value": null
               },
               {
-                "color": "red",
-                "value": 0
-              },
-              {
-                "color": "#6ED0E0",
-                "value": 0.0001
+                "color": "green",
+                "value": 1
               },
               {
                 "color": "#EAB839",
-                "value": 0.2
+                "value": 180
+              },
+              {
+                "color": "orange",
+                "value": 200
               }
             ]
           }
@@ -893,20 +893,20 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "red",
                 "value": null
               },
               {
-                "color": "red",
-                "value": 0
-              },
-              {
-                "color": "#6ED0E0",
-                "value": 0.0001
+                "color": "green",
+                "value": 1
               },
               {
                 "color": "#EAB839",
-                "value": 0.2
+                "value": 180
+              },
+              {
+                "color": "orange",
+                "value": 200
               }
             ]
           }
@@ -1000,20 +1000,20 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "red",
                 "value": null
               },
               {
-                "color": "red",
-                "value": 0
-              },
-              {
-                "color": "#6ED0E0",
-                "value": 0.0001
+                "color": "green",
+                "value": 1
               },
               {
                 "color": "#EAB839",
-                "value": 0.2
+                "value": 180
+              },
+              {
+                "color": "orange",
+                "value": 200
               }
             ]
           }
@@ -1107,20 +1107,20 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "red",
                 "value": null
               },
               {
-                "color": "red",
-                "value": 0
-              },
-              {
-                "color": "#6ED0E0",
-                "value": 0.0001
+                "color": "green",
+                "value": 1
               },
               {
                 "color": "#EAB839",
-                "value": 0.2
+                "value": 180
+              },
+              {
+                "color": "orange",
+                "value": 200
               }
             ]
           }
@@ -1214,20 +1214,20 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "red",
                 "value": null
               },
               {
-                "color": "red",
-                "value": 0
-              },
-              {
-                "color": "#6ED0E0",
-                "value": 0.0001
+                "color": "green",
+                "value": 1
               },
               {
                 "color": "#EAB839",
-                "value": 0.2
+                "value": 180
+              },
+              {
+                "color": "orange",
+                "value": 200
               }
             ]
           }
@@ -1356,11 +1356,11 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "red",
                 "value": null
               },
               {
-                "color": "red",
+                "color": "green",
                 "value": 80
               }
             ]
@@ -1376,7 +1376,7 @@
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "green",
+                  "fixedColor": "red",
                   "mode": "fixed"
                 }
               }
@@ -1719,7 +1719,7 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "Grafana2",
+  "title": "Kafka Heartbeat",
   "uid": "HRJS6nonz",
   "version": 2,
   "weekStart": ""

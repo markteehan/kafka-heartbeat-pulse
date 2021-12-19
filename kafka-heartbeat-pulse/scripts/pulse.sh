@@ -24,40 +24,28 @@ BROKER_6_ID=6 ; BROKER_6_NAME=kafka6 ; BROKER_6_PORT=19096
       do
         PARTITION_ID=$(($i - 1 ))
         BROKER_ID="BROKER_${i}_ID"
+        BROKER_NAME="BROKER_${i}_NAME"
+        BROKER_PORT="BROKER_${i}_PORT"
 
-        # Always attempt to bootstrap from broker id=1. Kafkacat prefers this.
-        BROKER_NAME="BROKER_1_NAME"
-        BROKER_PORT="BROKER_1_PORT"
         # check if the broker hostname is reachable before getting into a complicated returnCode+BashScript situation.
         nc -z ${!BROKER_NAME} ${!BROKER_PORT} 2>/dev/null
         RET=$?
         if [ "$RET" -gt 0 ]
         then
           UNREACHABLE_BROKER_ID=${!BROKER_ID}
-          # Broker_1 was unreahable. Try the others in sequence.
-          for j in $(seq 2 $BROKER_COUNT)
-           do
-             BROKER_ID="BROKER_${j}_ID"
-             BROKER_NAME="BROKER_${j}_NAME"
-             BROKER_PORT="BROKER_${j}_PORT"
-             nc -z ${!BROKER} ${!PORT} 2>/dev/null
-             RET=$?
-             if [ "$RET" -gt 0 ]
-             then
-               echo "Broker id=${UNREACHABLE_BROKER_ID} unreachable. Attempt to connect to broker id=${!BROKER_ID} : fail (return code ${RET})"
-             else
-               echo "Broker id=${UNREACHABLE_BROKER_ID} unreachable. Attempt to connect to broker id=${!BROKER_ID} : success"
-             fi
-           done
-        else   # RET=0 so BROKER_1 is reachable
-           exec 3>&1 4>&2
-           START=`date +%s%N | cut -b1-13`
-           RESULT=$({ echo "${i}:${DT}" | kafkacat -q -b ${!BROKER_NAME}:${!BROKER_PORT} -t heartbeat -K: -p${PARTITION_ID} -P -X topic.request.required.acks=1 1>&3 2>&4; } 2>&1 ) 
-           END=`date +%s%N | cut -b1-13`
-           ELAPSED_MS=$(($END - $START))
-           exec 3>&- 4>&-
-           curl --silent --output /dev/null -i -XPOST 'http://influxdb:8086/write?db=telegraf' --data-binary "heartbeat,broker=${i},environment=prod value=${ELAPSED_MS}"
-           echo "Heartbeat: broker id=${!BROKER_ID} message pulsed into topic heartbeat partition id=${PARTITION_ID} in ${ELAPSED_MS} ms. bootstrap is ${!BROKER_NAME}:${!BROKER_PORT}"
+          echo "Heartbeat: ERROR broker id=${UNREACHABLE_BROKER_ID} unreachable (${!BROKER_NAME}:${!BROKER_PORT}): fail (return code ${RET})"
+        fi
+
+        if [ "$RET" -eq 0 ]
+        then
+          exec 3>&1 4>&2
+          START=`date +%s%N | cut -b1-13`
+          RESULT=$({ echo "${i}:${DT}" | kafkacat -q -b ${!BROKER_NAME}:${!BROKER_PORT} -t heartbeat -K: -p${PARTITION_ID} -P -X topic.request.required.acks=1 1>&3 2>&4; } 2>&1 ) 
+          END=`date +%s%N | cut -b1-13`
+          ELAPSED_MS=$(($END - $START))
+          exec 3>&- 4>&-
+          curl --silent --output /dev/null -i -XPOST 'http://influxdb:8086/write?db=telegraf' --data-binary "heartbeat,broker=${i},environment=prod value=${ELAPSED_MS}"
+          echo "Heartbeat: broker id=${!BROKER_ID} message pulsed into topic heartbeat partition id=${PARTITION_ID} in ${ELAPSED_MS} ms. bootstrap is ${!BROKER_NAME}:${!BROKER_PORT}"
         fi
       done
       sleep ${SLEEP}

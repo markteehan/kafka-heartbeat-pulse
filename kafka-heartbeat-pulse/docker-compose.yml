@@ -305,6 +305,8 @@ services:
       - "3000:3000"
     environment:
       - GF_DEFAULT_THEME=light
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning
 
   Runme:
     image: confluentinc/cp-server:latest
