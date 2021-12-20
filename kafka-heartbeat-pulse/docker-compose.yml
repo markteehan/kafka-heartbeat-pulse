@@ -308,9 +308,9 @@ services:
     volumes:
       - ./grafana/provisioning:/etc/grafana/provisioning
 
-  Runme:
+  create-heartbeat-topic:
     image: confluentinc/cp-server:latest
-    container_name: Runme
+    container_name: create-heartbeat-topic
     tty: true
     depends_on:
       - kafka6
@@ -323,9 +323,25 @@ services:
       - sh
       - -c
       - |
-        echo "========= Starting Heartbeater ==========="
+        sleep 10
         /tmp/kafkacat/create.sh
-        sleep 5
-        /tmp/kafkacat/pulse.sh
-        /tmp/kafkacat/pulse.sh 1>/dev/null 2>&1    # remove the redirects for stdout logging
 
+  -heartbeat:
+    image: confluentinc/cp-kafkacat
+    container_name: heartbeat
+    tty: true
+    user: root
+    depends_on:
+      - kafka6
+    networks:
+      - n1
+    volumes:
+       - ./log4j-injected:/etc/kafka/log4j-injected
+       - ./scripts:/tmp/kafkacat
+    command:
+      - sh
+      - -c
+      - |
+        sleep 30
+        echo "========= Starting Heartbeater ==========="
+        /tmp/kafkacat/pulse.sh
