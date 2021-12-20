@@ -13,8 +13,6 @@ BROKER_5_ID=5 ; BROKER_5_NAME=kafka5 ; BROKER_5_PORT=19095
 BROKER_6_ID=6 ; BROKER_6_NAME=kafka6 ; BROKER_6_PORT=19096
 
     echo "========= Pulsing into topic heartbeat every ${SLEEP} secs ===================="
-    export PATH=/tmp/kafkacat:${PATH}
-    export LD_LIBRARY_PATH=/tmp/kafkacat/lib:${LD_LIBRARY_PATH}
     while true
     do
       DT=`date +"%a %d-%b %H:%m:%S"`
